@@ -1,0 +1,44 @@
+.radio-button {
+  --size: 24px;
+  display: flex;
+  margin-bottom: calc(var(--size) / 3);
+  align-items: start;
+  justify-content: start;
+}
+
+.radio-button label {
+  cursor: pointer;
+  font-size: calc(var(--size) - var(--size) / 3);
+  line-height: var(--size);
+  padding-left: calc(var(--size) / 3);
+}
+
+.radio-button input {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  appearance: none;
+  width: var(--size);
+  height: var(--size);
+  min-width: var(--size);
+  border: 2px solid var(--accent, #000);
+  border-radius: 50%;
+  margin: 0;
+}
+
+.radio-button input::after {
+  content: "";
+  box-sizing: border-box;
+  display: block;
+  width: calc(var(--size) / 2);
+  height: calc(var(--size) / 2);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform .1s ease-in-out;
+  background-color: var(--accent, #000);
+}
+
+.radio-button input:checked::after {
+  transform: scale(1);
+}

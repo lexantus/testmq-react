@@ -1,0 +1,76 @@
+@import url("colors.css");
+@import url("radio.css");
+
+:root {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  box-sizing: border-box;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 1rem;
+}
+
+/* Form elements */
+fieldset {
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  border-top: 1px solid lightgray;
+  margin-top: 1rem;
+}
+
+/* Utils */
+.flex {
+  display: flex;
+}
+
+.flex-space-between {
+  justify-content: space-between;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Layout */
+.grid-container {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: 100px auto;
+  grid-template-areas:
+    ". title ."
+    "params content content";
+}
+
+.item-title {
+  grid-area: title;
+}
+
+.item-params {
+  grid-area: params;
+}
+
+.item-content {
+  grid-area: content;
+}
+
+/* Components */
+.plot-source,
+.plot-author {
+  font-size: 0.75rem;
+}
