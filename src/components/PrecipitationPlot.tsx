@@ -18,14 +18,17 @@ export function PrecipitationPlot({ title, data }: Props): JSX.Element {
     const VIEW_HEIGHT = DPI_HEIGHT - 2 * PADDING;
     const VIEW_WIDTH = DPI_WIDTH - PADDING;
 
-    const ctx = canvas.getContext("2d");
-    let raf;
+    if (canvasRef.current == null) {
+      return
+    }
+
+    const ctx = canvasRef.current.getContext("2d");
     canvasRef.current.style.width = `${WIDTH}px`;
     canvasRef.current.style.height = `${HEIGHT}px`;
     canvasRef.current.width = DPI_WIDTH;
     canvasRef.current.height = DPI_HEIGHT;
 
-    function xAxis(ctx, data, xRatio) {
+    function xAxis(ctx: CanvasRenderingContext2D, data: string[], xRatio: number) {
       const colsCount = 6;
       const step = Math.round(data.length / colsCount);
 
@@ -36,15 +39,15 @@ export function PrecipitationPlot({ title, data }: Props): JSX.Element {
         const x = i * xRatio;
 
         if ((i - 1) % step === 0) {
-          const text = data[i];
-          ctx.fillText(text, x, DPI_HEIGHT - 10);
+          const txt = data[i];
+          ctx.fillText(txt, x, DPI_HEIGHT - 10);
         }
       }
       ctx.stroke();
       ctx.closePath();
     }
 
-    function yAxis(ctx, yMin, yMax) {
+    function yAxis(ctx: CanvasRenderingContext2D, yMin: number, yMax: number) {
       const step = VIEW_HEIGHT / ROWS_COUNT;
       const textStep = (yMax - yMin) / ROWS_COUNT;
 
@@ -57,7 +60,7 @@ export function PrecipitationPlot({ title, data }: Props): JSX.Element {
       for (let i = 0; i <= ROWS_COUNT; i++) {
         const y = step * i;
         const text = Math.round(yMax - textStep * i);
-        ctx.fillText(text, 10, y + PADDING);
+        ctx.fillText(String(text), 10, y + PADDING);
         ctx.moveTo(PADDING, y + PADDING);
         ctx.lineTo(DPI_WIDTH, y + PADDING);
       }
@@ -73,18 +76,18 @@ export function PrecipitationPlot({ title, data }: Props): JSX.Element {
       return [min, max];
     }
 
-    function toCoord(xRatio, yRatio) {
-      return (y, i) => [
+    function toCoord(xRatio: number, yRatio: number) {
+      return (y: number, i: number) => [
         i * xRatio + PADDING,
         DPI_HEIGHT - y * yRatio - PADDING,
       ];
     }
 
-    function clear() {
+    function clear(ctx: CanvasRenderingContext2D) {
       ctx.clearRect(0, 0, DPI_WIDTH, DPI_HEIGHT);
     }
 
-    function axisLines() {
+    function axisLines(ctx: CanvasRenderingContext2D) {
       ctx.beginPath();
       ctx.moveTo(PADDING, 0);
       ctx.lineTo(PADDING, DPI_HEIGHT - PADDING);
@@ -93,7 +96,7 @@ export function PrecipitationPlot({ title, data }: Props): JSX.Element {
       ctx.closePath();
     }
 
-    function line(ctx, coords, { color }) {
+    function line(ctx: CanvasRenderingContext2D, coords: number[], { color }: { color: string}) {
       ctx.lineWidth = 4;
       ctx.strokeStyle = color;
       ctx.fillStyle = "white";
@@ -101,9 +104,9 @@ export function PrecipitationPlot({ title, data }: Props): JSX.Element {
       ctx.stroke();
     }
 
-    function draw() {
-      clear();
-      axisLines();
+    function draw(ctx: CanvasRenderingContext2D) {
+      clear(ctx);
+      axisLines(ctx);
 
       const xData = data.map(({ t }) => t);
       const yData = data.map(({ v }) => v);
@@ -118,14 +121,16 @@ export function PrecipitationPlot({ title, data }: Props): JSX.Element {
 
       ctx.beginPath();
       ctx.moveTo(PADDING, DPI_HEIGHT - PADDING);
-      yData.map(toCoord(xRatio, yRatio)).forEach((coords, idx) => {
+      yData.map(toCoord(xRatio, yRatio)).forEach((coords) => {
         line(ctx, coords, { color: "green" });
       });
       ctx.closePath();
     }
 
-    draw();
-  }, [data]);
+    if (ctx !== null) {
+      draw(ctx);
+    }
+  }, [data, canvasRef]);
 
   return (
     <>

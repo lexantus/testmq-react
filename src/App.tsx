@@ -29,7 +29,7 @@ function App() {
 
     if (parameter === "temperature") {
       paramData = temperature;
-      title = getParamTitle("Температура", period);
+        title = getParamTitle("Температура", period);
     } else {
       paramData = precipitation;
       title = getParamTitle("Осадки", period);
@@ -56,7 +56,7 @@ function App() {
           value="precipitation"
           checked={parameter === "precipitation"}
           label="Осадки"
-          onChange={(event) => setParameter(event.target.value)}
+          onChange={(event) => setParameter(event.target.value as Parameter)}
         />
         <RadioButton
           id="temperature"
@@ -64,7 +64,7 @@ function App() {
           value="temperature"
           checked={parameter === "temperature"}
           label="Температура"
-          onChange={(event) => setParameter(event.target.value)}
+          onChange={(event) => setParameter(event.target.value as Parameter)}
         />
         <YearInterval
           startYear={period[0]}

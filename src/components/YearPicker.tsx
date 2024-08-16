@@ -4,7 +4,7 @@ interface Props {
   value?: string;
   minYear?: number;
   maxYear?: number;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
 /*
@@ -23,7 +23,7 @@ export function YearPicker({
   const selectId = useId();
 
   if (minYear > maxYear) throw new Error("minYear > maxYear");
-  if (value && (value < minYear || value > maxYear)) {
+  if (value && (Number(value) < minYear || Number(value) > maxYear)) {
     throw new Error(
       `out of range: ${value} is not in [${minYear}, ${maxYear}]`
     );

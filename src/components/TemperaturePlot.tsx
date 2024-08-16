@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { ItemData } from "../types";
-import { drawGrid, drawAxis, drawHistogramCol, drawHistogramColTopLine, clear } from "../draw";
+import { drawGrid, drawAxis, drawHistogramCol, clear } from "../draw";
 import { useCanvas } from "../hooks";
 
 interface Props {
@@ -16,7 +16,7 @@ function cutWindow(data: ItemData[], startIndex: number, limit: number) {
 const w = 1080;
 const h = 600;
 
-export function TemperaturePlot({ title, data }: Props): JSX.Element {
+export function TemperaturePlot({ data }: Props): JSX.Element {
   const { canvasRef } = useCanvas(w, h);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export function TemperaturePlot({ title, data }: Props): JSX.Element {
         const colW = (w - gapTotalW) / windowedData.length;
         const x = index * colW + colW / 2;
         const h = item.v;
-        drawHistogramCol(ctx, x + gap * index, colW, h / yRatio, item.v);
+        drawHistogramCol(ctx, x + gap * index, colW, h / yRatio, String(item.v));
       });
     }
   }, [data]);
